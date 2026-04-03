@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placement Portal - Class Diagram</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .diagram-container {
+            overflow-x: auto;
+            padding: 20px;
+            background-color: #fafafa;
+            border-radius: 5px;
+        }
+        .controls {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 0 5px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .legend {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+        }
+        .legend h3 {
+            margin-top: 0;
+            color: #495057;
+        }
+        .legend ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .legend li {
+            margin: 5px 0;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Placement Portal - Class Diagram</h1>
+        
+        <div class="controls">
+            <button onclick="zoomIn()">Zoom In</button>
+            <button onclick="zoomOut()">Zoom Out</button>
+            <button onclick="resetZoom()">Reset Zoom</button>
+        </div>
+
+        <div class="diagram-container" id="diagram-container">
+            <div class="mermaid" id="mermaid-diagram">
+classDiagram
+    class Admin {
+        +int id_admin
+        +string username
+        +string password
+        +login()
+        +manageUsers()
+        +manageCompanies()
+        +postNotice()
+    }
+
+    class Users {
+        +int id_user
+        +string firstname
+        +string lastname
+        +string email
+        +string password
+        +string address
+        +string city
+        +string state
+        +string contactno
+        +string qualification
+        +string stream
+        +string passingyear
+        +string dob
+        +string age
+        +string designation
+        +string resume
+        +string hash
+        +int active
+        +string aboutme
+        +string skills
+        +string hsc
+        +int ssc
+        +int ug
+        +int pg
+        +register()
+        +login()
+        +updateProfile()
+        +applyJob()
+        +viewApplications()
+    }
+
+    class Company {
+        +int id_company
+        +string name
+        +string companyname
+        +string country
+        +string state
+        +string city
+        +string contactno
+        +string website
+        +string email
+        +string password
+        +string hash
+        +int active
+        +datetime createdAt
+        +register()
+        +login()
+        +postJob()
+        +viewApplications()
+        +updateProfile()
+    }
+
+    class JobPost {
+        +int id_jobpost
+        +int id_company
+        +string jobtitle
+        +string description
+        +string minimumsalary
+        +string maximumsalary
+        +string experience
+        +string qualification
+        +datetime createdAt
+        +create()
+        +update()
+        +delete()
+        +getDetails()
+    }
+
+    class ApplyJobPost {
+        +int id_apply
+        +int id_jobpost
+        +int id_company
+        +int id_user
+        +int status
+        +apply()
+        +updateStatus()
+        +withdraw()
+        +getStatus()
+    }
+
+    class Mailbox {
+        +int id_mailbox
+        +int id_fromuser
+        +string fromuser
+        +int id_touser
+        +string subject
+        +string message
+        +datetime createdAt
+        +sendMessage()
+        +readMessage()
+        +deleteMessage()
+    }
+
+    class ReplyMailbox {
+        +int id_reply
+        +int id_mailbox
+        +int id_user
+        +string usertype
+        +string message
+        +datetime createdAt
+        +reply()
+        +getReplies()
+    }
+
+    class Notice {
+        +int id
+        +string subject
+        +string notice
+        +string audience
+        +datetime date
+        +create()
+        +update()
+        +delete()
+        +getNotices()
+    }
+
+    class States {
+        +int id
+        +string name
+        +int country_id
+        +getStates()
+        +getCities()
+    }
+
+    class Cities {
+        +int id
+        +string name
+        +int state_id
+        +getCitiesByState()
+    }
+
+    Company "1" -- "*" JobPost : posts
+    JobPost "1" -- "*" ApplyJobPost : receives
+    Users "1" -- "*" ApplyJobPost : submits
+    Company "1" -- "*" ApplyJobPost : reviews
+    Mailbox "1" -- "*" ReplyMailbox : contains
+    States "1" -- "*" Cities : contains
+    Users "*" -- "*" Mailbox : sends/receives
+    Company "*" -- "*" Mailbox : sends/receives
+    Admin "1" -- "*" Notice : creates
+            </div>
+        </div>
+
+        <div class="legend">
+            <h3>Legend</h3>
+            <ul>
+                <li><strong>Admin:</strong> System administrators who manage the platform</li>
+                <li><strong>Users:</strong> Student candidates looking for jobs</li>
+                <li><strong>Company:</strong> Employers posting job opportunities</li>
+                <li><strong>JobPost:</strong> Job listings created by companies</li>
+                <li><strong>ApplyJobPost:</strong> Job applications submitted by users</li>
+                <li><strong>Mailbox:</strong> Messaging system for communication</li>
+                <li><strong>ReplyMailbox:</strong> Replies to messages</li>
+                <li><strong>Notice:</strong> Announcements and notifications</li>
+                <li><strong>States & Cities:</strong> Location data for addresses</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Mermaid with configuration
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                curve: 'linear',
+                useMaxWidth: true,
+                htmlLabels: true
+            },
+            class: {
+                curve: 'linear'
+            }
+        });
+
+        let currentZoom = 1;
+        const diagramContainer = document.getElementById('diagram-container');
+
+        function zoomIn() {
+            currentZoom += 0.1;
+            applyZoom();
+        }
+
+        function zoomOut() {
+            if (currentZoom > 0.3) {
+                currentZoom -= 0.1;
+                applyZoom();
+            }
+        }
+
+        function resetZoom() {
+            currentZoom = 1;
+            applyZoom();
+        }
+
+        function applyZoom() {
+            const mermaidDiv = document.getElementById('mermaid-diagram');
+            mermaidDiv.style.transform = `scale(${currentZoom})`;
+            mermaidDiv.style.transformOrigin = 'top left';
+        }
+
+        // Render the diagram after page load
+        window.addEventListener('load', function() {
+            mermaid.init(undefined, document.querySelectorAll('.mermaid'));
+        });
+    </script>
+</body>
+</html>
